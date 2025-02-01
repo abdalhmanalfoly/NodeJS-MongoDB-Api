@@ -29,3 +29,9 @@ app.listen(port,()=>{
 })
 // handeled port to listen
 */
+
+
+
+// Example from fetch 
+
+//fetch('http://localhost:5000/api/courses').then(res=>res.json()).then(data=>console.log(JSON.stringify(data))) //fetch data from localhost:5000/api/courses
