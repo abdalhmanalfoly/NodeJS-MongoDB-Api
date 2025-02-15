@@ -22,6 +22,16 @@ export const userSchema = new mongoose.Schema({
     },
     token:{
         type:String,
+    },
+    role:{
+        type:String,
+        enum:["USER","ADMIN","MANGER"],
+        default:"USER"
+    },
+    avatar:{
+        type:String,
+        default:'uploads/Avatar-Profile.png',
+        require:false
     }
 });
 
