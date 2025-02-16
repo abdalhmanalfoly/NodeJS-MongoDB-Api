@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Documentation - REST API with Express.js & MongoDB</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; line-height: 1.6; }
+        h1, h2 { color: #333; }
+        pre { background: #e7e7e7; padding: 15px; border-radius: 5px; }
+        code { font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>REST API Documentation</h1>
+
+    <p>This project is a <strong>REST API</strong> built using <strong>Express.js</strong> and integrated with <strong>MongoDB</strong> via <strong>Mongoose</strong>. The API provides endpoints for managing <strong>users</strong> and <strong>courses</strong>, utilizing <strong>JWT authentication</strong> to secure access to protected resources.</p>
+    
+    <h2>Base URL</h2>
+    <p>All API endpoints should be prefixed with:</p>
+    <pre><code>https://satisfactory-teddy-abdalrhmangroup-f18e5404.koyeb.app/api/</code></pre>
+    
+    <h2>Technologies Used</h2>
+    <ul>
+        <li>Node.js</li>
+        <li>Express.js</li>
+        <li>MongoDB & Mongoose</li>
+        <li>JWT (jsonwebtoken)</li>
+        <li>bcrypt.js</li>
+        <li>dotenv</li>
+        <li>morgan</li>
+        <li>CORS</li>
+        <li>Multer</li>
+    </ul>
+    
+    <h2>Project Setup</h2>
+    <h3>1. Install Dependencies</h3>
+    <pre><code>npm install express mongoose dotenv jsonwebtoken bcryptjs cors morgan multer</code></pre>
+    
+    <h3>2. Environment Variables</h3>
+    <pre><code>MONGO_URL=your_mongodb_connection_string
+JSONWEBTOKEN_SECRET_KEY=your_secret_key
+PORT=5000</code></pre>
+    
+    <h3>3. Start the Server</h3>
+    <pre><code>node index.js</code></pre>
+    
+    <h2>API Endpoints</h2>
+    <h3>Course Management</h3>
+    <h4>1. Get All Courses</h4>
+    <pre><code>GET /api/courses</code></pre>
+    <h4>2. Get a Single Course</h4>
+    <pre><code>GET /api/courses/:courseId</code></pre>
+    
+    <h4>3. Create a New Course</h4>
+    <pre><code>POST /api/courses</code></pre>
+    
+    <h4>4. Update a Course</h4>
+    <pre><code>PATCH /api/courses/:courseId</code></pre>
+    
+    <h4>5. Delete a Course</h4>
+    <pre><code>DELETE /api/courses/:courseId</code></pre>
+    
+    <h3>User Management</h3>
+    <h4>1. Get All Users</h4>
+    <pre><code>GET /api/users</code></pre>
+    
+    <h4>2. User Registration</h4>
+    <pre><code>POST /api/users/register</code></pre>
+    
+    <h4>3. User Login</h4>
+    <pre><code>POST /api/users/login</code></pre>
+    
+    <h2>File Uploads</h2>
+    <p>Multer is used for handling file uploads.</p>
+    
+    <h2>Authentication & Authorization</h2>
+    <p>Users receive a <strong>JWT token</strong> upon registration or login.</p>
+    
+    <h2>Error Handling</h2>
+    <ul>
+        <li>Validation Errors: 400 Bad Request</li>
+        <li>Unauthorized Access: 401 Unauthorized</li>
+        <li>Resource Not Found: 404 Not Found</li>
+    </ul>
+    
+    <h2>Conclusion</h2>
+    <p>This REST API provides a <strong>secure</strong> and <strong>scalable</strong> way to manage courses and users.</p>
+    <div>
+    </div>
+    <h2>Server created by <a style="color: slateblue;" href="https://portfolio-me-main.vercel.app/">Abdalrhman</a></h2>
+
+</body>
+</html>

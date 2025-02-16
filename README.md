@@ -1,48 +1,69 @@
-﻿# Project Documentation - REST API with Express.js & MongoDB**
+﻿# Project Documentation - REST API with Express.js & MongoDB
 
 ## **Introduction**
-This project is a **REST API** built using **Express.js** and integrated with a **MongoDB** database via **Mongoose**. It includes features for managing users and courses, with JWT authentication for secure data access.
+This project is a **REST API** built using **Express.js** and integrated with **MongoDB** via **Mongoose**. The API provides endpoints for managing **users** and **courses**, utilizing **JWT authentication** to secure access to protected resources. The application follows **CRUD (Create, Read, Update, Delete)** operations and includes **file uploads** for user avatars.
+
+---
+
+## **Base URL**
+
+All API endpoints should be prefixed with the following base URL:
+
+```
+https://satisfactory-teddy-abdalrhmangroup-f18e5404.koyeb.app/api/
+```
 
 ---
 
 ## **Technologies Used**
-- **Node.js** – Runtime environment.
-- **Express.js** – Web framework for JavaScript.
-- **MongoDB & Mongoose** – NoSQL database and ODM library.
-- **JWT (jsonwebtoken)** – Token-based authentication.
-- **bcrypt.js** – Password encryption.
-- **dotenv** – Environment variable management.
-- **morgan** – HTTP request logging.
-- **CORS** – Cross-Origin Resource Sharing.
+- **Node.js** – JavaScript runtime environment for backend development.
+- **Express.js** – Web framework for building APIs.
+- **MongoDB & Mongoose** – NoSQL database and ODM (Object Data Modeling) library.
+- **JWT (jsonwebtoken)** – Secure authentication mechanism using JSON Web Tokens.
+- **bcrypt.js** – Secure password hashing.
+- **dotenv** – Loads environment variables from a `.env` file.
+- **morgan** – HTTP request logger for debugging.
+- **CORS** – Middleware for handling Cross-Origin Resource Sharing.
+- **Multer** – Middleware for handling file uploads.
 
 ---
 
 ## **Project Setup**
-1. Install dependencies:
-   ```sh
-   npm install express mongoose dotenv jsonwebtoken bcryptjs cors morgan express-validator
-   ```
-2. Create a **.env** file with the following variables:
-   ```env
-   MONGO_URL=your_mongodb_connection_string
-   JSONWEBTOKEN_SECRET_KEY=your_secret_key
-   PORT=5000
-   ```
-3. Start the server:
-   ```sh
-   node index.js
-   ```
+### **1. Install Dependencies**
+To install the required dependencies, run:
+```sh
+npm install express mongoose dotenv jsonwebtoken bcryptjs cors morgan multer
+```
+
+### **2. Environment Variables**
+Create a `.env` file in the root directory and define the following variables:
+```env
+MONGO_URL=your_mongodb_connection_string
+JSONWEBTOKEN_SECRET_KEY=your_secret_key
+PORT=5000
+```
+
+### **3. Start the Server**
+Run the following command to start the API server:
+```sh
+node index.js
+```
+The API will be available at `http://localhost:5000`.
 
 ---
 
-## **Available Endpoints**
+## **API Endpoints**
 
 ### **1. Course Management**
+
 #### **1.1. Get All Courses**
 - **Endpoint:** `GET /api/courses`
 - **Authentication:** Not required
-- **Description:** Fetch all courses with optional pagination using `limit` and `page` query parameters.
-- **Success Response:**
+- **Query Parameters:**
+  - `limit` (optional) - Number of courses per page.
+  - `page` (optional) - Page number for pagination.
+- **Description:** Retrieves a paginated list of courses.
+- **Response Example:**
   ```json
   {
     "status": "success",
@@ -53,8 +74,8 @@ This project is a **REST API** built using **Express.js** and integrated with a 
 #### **1.2. Get a Single Course**
 - **Endpoint:** `GET /api/courses/:courseId`
 - **Authentication:** Not required
-- **Description:** Retrieve a specific course by its **ID**.
-- **Response if Course Not Found:**
+- **Description:** Fetches course details by its unique **ID**.
+- **Response If Not Found:**
   ```json
   { "msg": "course is not found" }
   ```
@@ -62,8 +83,9 @@ This project is a **REST API** built using **Express.js** and integrated with a 
 #### **1.3. Create a New Course**
 - **Endpoint:** `POST /api/courses`
 - **Authentication:** Required (JWT Token)
-- **Validation:** `title` must have at least 3 characters.
-- **Success Response:**
+- **Access Role:** `ADMIN` or `MANAGER`
+- **Description:** Creates a new course and saves it to the database.
+- **Response Example:**
   ```json
   {
     "status": "success",
@@ -74,26 +96,28 @@ This project is a **REST API** built using **Express.js** and integrated with a 
 #### **1.4. Update a Course**
 - **Endpoint:** `PATCH /api/courses/:courseId`
 - **Authentication:** Required (JWT Token)
-- **Description:** Update the details of an existing course.
+- **Description:** Updates an existing course.
 
 #### **1.5. Delete a Course**
 - **Endpoint:** `DELETE /api/courses/:courseId`
 - **Authentication:** Required (JWT Token)
-- **Description:** Remove a course from the database.
+- **Access Role:** `ADMIN` or `MANAGER`
+- **Description:** Deletes a course by its **ID**.
 
 ---
 
 ### **2. User Management**
+
 #### **2.1. Get All Users**
 - **Endpoint:** `GET /api/users`
 - **Authentication:** Required (JWT Token)
-- **Description:** Retrieve a list of all users, excluding their passwords.
+- **Description:** Retrieves all users while excluding their passwords.
 
 #### **2.2. User Registration**
 - **Endpoint:** `POST /api/users/register`
 - **Authentication:** Not required
-- **Description:** Register a new user by hashing their password and generating a JWT token.
-- **Success Response:**
+- **Description:** Registers a new user, hashes their password, and generates a JWT token.
+- **Response Example:**
   ```json
   {
     "status": "success",
@@ -105,40 +129,56 @@ This project is a **REST API** built using **Express.js** and integrated with a 
 #### **2.3. User Login**
 - **Endpoint:** `POST /api/users/login`
 - **Authentication:** Not required
-- **Description:** Validate user credentials and return a JWT token upon success.
-- **Error Response if Credentials are Incorrect:**
+- **Description:** Authenticates users and returns a JWT token.
+- **Error Response (Invalid Credentials):**
   ```json
   {
     "status": "ERROR",
-    "msg": "password or email not correct"
+    "msg": "Incorrect email or password"
   }
   ```
 
 ---
 
-## **Authentication & Data Protection**
-Certain endpoints require **JWT authentication**:
-1. The token must be included in the **Authorization Header** of requests.
-2. The token is verified using `jsonwebtoken.verify()`.
-3. Upon successful verification, access to protected resources is granted.
+## **File Uploads**
+- **Multer** is used to handle file uploads.
+- **Allowed File Types:** JPEG, PNG.
+- **File Size Limit:** 5MB.
+- **Upload Destination:** `uploads/` directory.
+- **Example Usage:** Avatar upload during user registration.
+
+---
+
+## **Authentication & Authorization**
+1. **JWT Authentication:**
+   - Users receive a **JWT token** upon registration or login.
+   - The token must be included in the **Authorization Header**.
+   - Example:
+     ```sh
+     Authorization: Bearer <your_token>
+     ```
+   - Tokens are verified using `jsonwebtoken.verify()`.
+
+2. **Role-Based Access Control (RBAC):**
+   - Only `ADMIN` and `MANAGER` roles can create or delete courses.
+   - Middleware `verifyToken` and `allowedTo` handle access control.
 
 ---
 
 ## **Error Handling**
 1. **Validation Errors:**
-   - Handled using `express-validator`.
-   - If validation fails, an array of errors is returned.
+   - Missing or incorrect fields return a **400 Bad Request**.
 2. **Unauthorized Access:**
-   - If no token is provided or the token is invalid, a **401 Unauthorized** response is returned.
+   - Invalid or missing tokens return a **401 Unauthorized**.
 3. **Resource Not Found:**
-   - If a requested course or user does not exist, a **404 Not Found** response is sent.
-4. **Handling Unknown Routes:**
-   - A **404 Resource Not Found** response is returned for unhandled routes.
+   - Invalid course or user IDs return a **404 Not Found**.
+4. **Unhandled Routes:**
+   - Any unknown API request returns a **404 Resource Not Found**.
 
 ---
 
-## **Running the Project**
-1. Ensure the **.env** file is configured correctly.
+## **Running & Testing the API**
+1. Ensure `.env` is correctly set up.
 2. Start the server:
    ```sh
    node index.js
@@ -146,4 +186,7 @@ Certain endpoints require **JWT authentication**:
 3. Use **Postman** or similar tools to test API requests.
 
 ---
+
+## **Conclusion**
+This REST API provides a **secure**, **scalable**, and **efficient** way to manage courses and users. It includes authentication, authorization, file uploads, and structured error handling to ensure reliability in production environments.
 

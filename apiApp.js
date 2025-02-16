@@ -235,6 +235,12 @@ app.post('/api/users/login', async (req, res) => {
 });
 
 //handeled 404 request 
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'servercontent.html'));
+});
+app.get('/api', (req, res) => {
+    res.sendFile(path.join(__dirname, 'CONTENT.txt'));
+});
 app.all('*',(req,res)=>{
     res.status(404).json({status : "ERROR",data:{MSG:"THIS RESORSCES IS NOT FOUND"}})
 })
